@@ -1,0 +1,8 @@
+{
+  "name": "Major Portfolio Clone",
+  "description": "A cinematic portfolio hero section with a background video/image and bold typography.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
