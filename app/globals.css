@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #B93616;
-  --color-secondary: #640706;
-  --color-background: #110707;
-  --color-accent: #DFAB84;
-  --color-text: #F4F4F4;
+  --color-primary: #FF7A3D;         /* Primary Glow Orange */
+  --color-secondary: #310405;       /* Deep Crimson */
+  --color-background: #010303;      /* Background Black */
+  --color-accent: #C68867;          /* Soft Ember */
+  --color-text: #F5F5F5;            /* Highlight White */
+  --color-lava: #6D0304;            /* Lava Red */
+  --color-elevated: #14181C;        /* Elevated Surface */
 }
 
 body {

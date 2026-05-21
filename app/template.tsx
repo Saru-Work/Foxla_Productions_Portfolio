@@ -50,25 +50,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
-  // Different images for different pages to make transitions feel distinct
-  const homeImages = [
-    "https://picsum.photos/seed/football/1920/1080?blur=2",
-    "https://picsum.photos/seed/cinema/1920/1080?blur=2",
-    "https://picsum.photos/seed/brands/1920/1080?blur=2",
-    "https://picsum.photos/seed/social/1920/1080?blur=2",
-    "https://picsum.photos/seed/design/1920/1080?blur=2",
-  ];
-
-  const bgImages = {
-    "/": homeImages[homeIndex] || homeImages[0],
-    "/portfolio": "https://picsum.photos/seed/portfolio/1920/1080?blur=1",
-    "/about": "https://picsum.photos/seed/agency/1920/1080?blur=2",
-    "/contact": "https://picsum.photos/seed/contact/1920/1080?blur=2",
-  };
-
-  const currentImage =
-    bgImages[pathname as keyof typeof bgImages] || bgImages["/"];
-
   const pages = ["/", "/portfolio", "/about", "/contact"];
   const currentIndex =
     pages.indexOf(pathname) === -1 ? 0 : pages.indexOf(pathname);
@@ -109,35 +90,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
       className="fixed inset-0 w-full h-[100dvh] bg-background flex flex-col justify-between overflow-hidden shadow-2xl shadow-background z-20 origin-center"
       style={{ willChange: "transform, filter" }}
     >
-      {/* Background Image/Video Container */}
+      {/* Background Container */}
       <motion.div
-        className="absolute inset-[-50px] z-0"
+        className="absolute inset-[-50px] z-0 bg-[#e1591e]"
         style={{ x: translateX, y: translateY }}
-      >
-        <>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentImage}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={currentImage}
-                alt="Page Background"
-                fill
-                priority
-                className="object-cover opacity-70"
-              />
-            </motion.div>
-          </AnimatePresence>
-          {/* Color overlay to match the moody tone */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent mix-blend-multiply pointer-events-none" />
-          <div className="absolute inset-0 bg-secondary/30 mix-blend-overlay pointer-events-none" />
-        </>
-      </motion.div>
+      />
 
       {/* Foreground Container */}
       <div className="relative z-10 flex flex-col justify-between h-full w-full max-w-[1920px] mx-auto p-6 md:p-12 pointer-events-none">
@@ -249,19 +206,13 @@ export default function Template({ children }: { children: React.ReactNode }) {
           {children}
         </motion.div>
 
-        {/* Footer */}
+        {/* Footer - Glassmorphism surface */}
         <footer className="flex flex-col gap-6 pointer-events-auto">
           {/* Progress Bar Component */}
           {pathname !== "/portfolio" && (
             <div className="w-full flex gap-2">
               {[0, 1, 2, 3, 4].map((item, index) => {
-                // In template.tsx
-                const activeIndex =
-                  pathname === "/" ||
-                  pathname === "/about" ||
-                  pathname === "/contact"
-                    ? homeIndex
-                    : currentIndex;
+                const activeIndex = pathname === "/" ? homeIndex : currentIndex;
                 const isActive = index <= activeIndex;
                 return (
                   <div
@@ -294,16 +245,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="flex gap-4 md:gap-6 md:flex-1 justify-center">
-              <a
-                href="https://www.instagram.com/foxlaproductions/"
-                className="hover:text-accent transition-colors"
-              >
+              <a href="#" className="hover:text-accent transition-colors">
                 Instagram
               </a>
-              <a
-                href="https://www.linkedin.com/company/foxlaproductions/"
-                className="hover:text-accent transition-colors"
-              >
+              <a href="#" className="hover:text-accent transition-colors">
                 LinkedIn
               </a>
             </div>
