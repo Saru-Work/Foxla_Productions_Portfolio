@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
   AnimatePresence,
@@ -18,6 +18,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const { homeIndex } = useAppContext();
   const [mounted, setMounted] = useState(false);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -50,24 +51,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
-  // Different images for different pages to make transitions feel distinct
-  const homeImages = [
-    "https://picsum.photos/seed/football/1920/1080?blur=2",
-    "https://picsum.photos/seed/cinema/1920/1080?blur=2",
-    "https://picsum.photos/seed/brands/1920/1080?blur=2",
-    "https://picsum.photos/seed/social/1920/1080?blur=2",
-    "https://picsum.photos/seed/design/1920/1080?blur=2",
-  ];
-
+  // Keep images for the other pages
   const bgImages = {
-    "/": homeImages[homeIndex] || homeImages[0],
     "/portfolio": "https://picsum.photos/seed/portfolio/1920/1080?blur=1",
     "/about": "https://picsum.photos/seed/agency/1920/1080?blur=2",
     "/contact": "https://picsum.photos/seed/contact/1920/1080?blur=2",
   };
 
-  const currentImage =
-    bgImages[pathname as keyof typeof bgImages] || bgImages["/"];
+  const showVideoBg =
+    pathname === "/" || pathname === "/about" || pathname === "/contact";
 
   const pages = ["/", "/portfolio", "/about", "/contact"];
   const currentIndex =
@@ -117,20 +109,39 @@ export default function Template({ children }: { children: React.ReactNode }) {
         <>
           <AnimatePresence mode="wait">
             <motion.div
-              key={currentImage}
+              key={
+                showVideoBg
+                  ? "global-video"
+                  : bgImages[pathname as keyof typeof bgImages]
+              }
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8 }}
               className="absolute inset-0"
             >
-              <Image
-                src={currentImage}
-                alt="Page Background"
-                fill
-                priority
-                className="object-cover opacity-70"
-              />
+              {showVideoBg ? (
+                <video
+                  ref={videoRef}
+                  src="/assets/videos/bg.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover opacity-70"
+                />
+              ) : (
+                <Image
+                  src={
+                    bgImages[pathname as keyof typeof bgImages] ||
+                    bgImages["/portfolio"]
+                  }
+                  alt="Page Background"
+                  fill
+                  priority
+                  className="object-cover opacity-70"
+                />
+              )}
             </motion.div>
           </AnimatePresence>
           {/* Color overlay to match the moody tone */}
@@ -255,7 +266,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
           {pathname !== "/portfolio" && (
             <div className="w-full flex gap-2">
               {[0, 1, 2, 3, 4].map((item, index) => {
-                // In template.tsx
                 const activeIndex =
                   pathname === "/" ||
                   pathname === "/about" ||
