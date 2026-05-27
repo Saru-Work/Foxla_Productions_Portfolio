@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
   AnimatePresence,
@@ -18,6 +18,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const { homeIndex } = useAppContext();
   const [mounted, setMounted] = useState(false);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -49,6 +50,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
+
+  // Keep images for the other pages
+  const bgImages: Record<string, string> = {
+    "/about": "https://picsum.photos/seed/agency/1920/1080?blur=2",
+    "/contact": "https://picsum.photos/seed/contact/1920/1080?blur=2",
+  };
+
+  const showVideoBg =
+    pathname === "/" || pathname === "/about" || pathname === "/contact";
 
   const pages = ["/", "/portfolio", "/about", "/contact"];
   const currentIndex =
@@ -94,7 +104,54 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <motion.div
         className="absolute inset-[-50px] z-0 bg-[#e1591e]"
         style={{ x: translateX, y: translateY }}
-      />
+      >
+        <>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={
+                showVideoBg
+                  ? "global-video"
+                  : pathname === "/portfolio"
+                    ? "portfolio-gradient"
+                    : bgImages[pathname as string] || "fallback"
+              }
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="absolute inset-0"
+            >
+              {showVideoBg ? (
+                <video
+                  ref={videoRef}
+                  src="/assets/videos/bg.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover opacity-70"
+                />
+              ) : pathname === "/portfolio" ? (
+                <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--color-secondary)_0%,_var(--color-background)_100%)] opacity-80" />
+              ) : (
+                <Image
+                  src={
+                    bgImages[pathname as string] ||
+                    "https://picsum.photos/seed/fallback/1920/1080"
+                  }
+                  alt="Page Background"
+                  fill
+                  priority
+                  className="object-cover opacity-70"
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
+          {/* Color overlay to match the moody tone */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent mix-blend-multiply pointer-events-none" />
+          <div className="absolute inset-0 bg-secondary/30 mix-blend-overlay pointer-events-none" />
+        </>
+      </motion.div>
 
       {/* Foreground Container */}
       <div className="relative z-10 flex flex-col justify-between h-full w-full max-w-[1920px] mx-auto p-6 md:p-12 pointer-events-none">
@@ -212,7 +269,12 @@ export default function Template({ children }: { children: React.ReactNode }) {
           {pathname !== "/portfolio" && (
             <div className="w-full flex gap-2">
               {[0, 1, 2, 3, 4].map((item, index) => {
-                const activeIndex = pathname === "/" ? homeIndex : currentIndex;
+                const activeIndex =
+                  pathname === "/" ||
+                  pathname === "/about" ||
+                  pathname === "/contact"
+                    ? homeIndex
+                    : currentIndex;
                 const isActive = index <= activeIndex;
                 return (
                   <div

@@ -1,0 +1,13 @@
+--- next.config.ts
++++ next.config.ts
+@@ -19,4 +19,10 @@
+       },
+       {
++        protocol: "https",
++        hostname: "fastly.picsum.photos",
++        port: "",
++        pathname: "/**",
++      },
++      {
+         protocol: "https",
+         hostname: "images.unsplash.com",

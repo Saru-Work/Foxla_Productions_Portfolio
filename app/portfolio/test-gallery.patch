@@ -1,0 +1,60 @@
+--- app/portfolio/Gallery3D.tsx
++++ app/portfolio/Gallery3D.tsx
+@@ -43,6 +43,6 @@
+     const t = state.clock.getElapsedTime();
+     const yFloat = Math.sin(t + index * 1000) * 0.1;
+     
+     const targetScale = hovered ? 1.15 : 1;
+     easing.damp3(ref.current.scale, [targetScale, targetScale, targetScale], 0.2, delta);
+     
+@@ -49,11 +49,11 @@
+     // Lift forward when hovered by slightly pushing it on its local Z axis
+-    const pushZ = hovered ? -1 : 0; // Negative Z is forward internally because it faces center?
++    const pushZ = hovered ? 1 : 0;
+     
+     ref.current.position.x = baseX;
+     ref.current.position.y = yFloat;
+     ref.current.position.z = baseZ;
+     // Rotate to face outward
+-    ref.current.rotation.y = angle;
++    ref.current.rotation.y = angle + Math.PI; // Face the camera when in front
+     
+     if (meshRef.current) {
+@@ -95,8 +95,8 @@
+ function Carousel({ projects, activeIndex, onSelect }) {
+   const group = useRef<THREE.Group>(null);
+-  const radius = 6.5;
++  const radius = 8;
+ 
+   useFrame((state, delta) => {
+     if (!group.current) return;
+-    const targetRotation = -activeIndex * ((Math.PI * 2) / projects.length);
++    const targetRotation = activeIndex * ((Math.PI * 2) / projects.length);
+     easing.dampE(group.current.rotation, [0, targetRotation, 0], 0.3, delta);
+@@ -107,3 +107,4 @@
+     
+-    // Subtle mouse parallax
+-    const targetX = (state.pointer.x * Math.PI) / 10;
+-    const targetY = (state.pointer.y * Math.PI) / 10;
+-    easing.dampE(group.current.rotation, [targetY * 0.2, targetRotation + targetX * 0.2, 0], 0.5, delta);
++    // Mouse parallax to group
++    easing.dampE(group.current.rotation, [state.pointer.y * 0.1, targetRotation + (state.pointer.x * 0.1), 0], 0.5, delta);
+   });
+@@ -118,3 +119,3 @@
+           onSelect={onSelect}
+           activeIndex={activeIndex}
+         />
+@@ -155,5 +156,5 @@
+     <>
+       <div className="absolute inset-0 w-full h-full z-0 cursor-crosshair">
+-        <Canvas camera={{ position: [0, 0, 0], fov: 60 }}>
++        <Canvas camera={{ position: [0, 0, 0], fov: 50 }}>
+           <ambientLight intensity={0.2} />
+@@ -159,3 +160,3 @@
+           <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
+           <spotLight position={[0, -5, 0]} intensity={2} color="#e1591e" />
+           
+-          <Carousel projects={projects} activeIndex={activeIndex} onSelect={setSelectedProject} />
++          <group position={[0, 0, -radius]}>
++             <Carousel projects={projects} activeIndex={activeIndex} onSelect={setSelectedProject} />
++          </group>

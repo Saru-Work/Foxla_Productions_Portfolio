@@ -1,0 +1,108 @@
+"use client";
+
+import React from "react";
+import { motion, AnimatePresence } from "motion/react";
+import dynamic from "next/dynamic";
+const Gallery3D = dynamic(() => import("./Gallery3D"), { ssr: false });
+
+const PROJECTS = [
+  {
+    id: "1",
+    title: "Photography",
+    subtitle: "Fashion & Lifestyle",
+    year: "2025",
+    image: "https://picsum.photos/seed/photography/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/3129595/3129595-uhd_2560_1440_30fps.mp4",
+    tags: ["Portrait", "Editorial"],
+  },
+  {
+    id: "2",
+    title: "End to end video production",
+    subtitle: "Racing Documentary",
+    year: "2024",
+    image: "https://picsum.photos/seed/video/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/5961661/5961661-uhd_2560_1440_30fps.mp4",
+    tags: ["Directing", "Cinematography"],
+  },
+  {
+    id: "3",
+    title: "Commercial ads",
+    subtitle: "Automotive Campaign",
+    year: "2024",
+    image: "https://picsum.photos/seed/promo/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/5961655/5961655-uhd_2560_1440_30fps.mp4",
+    tags: ["Commercial", "VFX"],
+  },
+  {
+    id: "4",
+    title: "Creative Direction and Design",
+    subtitle: "Brand Identity",
+    year: "2023",
+    image: "https://picsum.photos/seed/creative/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/6981412/6981412-uhd_2560_1440_25fps.mp4",
+    tags: ["Creative", "Design"],
+  },
+  {
+    id: "5",
+    title: "Website Design and Development",
+    subtitle: "Interactive Experiences",
+    year: "2023",
+    image: "https://picsum.photos/seed/web/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/6981410/6981410-uhd_2560_1440_25fps.mp4",
+    tags: ["UX/UI", "Development"],
+  },
+];
+
+export default function Portfolio() {
+  return (
+    <div className="absolute inset-0 w-full h-full text-text overflow-hidden bg-transparent">
+      <Gallery3D projects={PROJECTS} />
+
+      <div className="absolute top-[20%] left-0 w-full flex flex-col items-center justify-center shrink-0 mix-blend-overlay opacity-30 pointer-events-none z-10 px-4">
+        <AnimatePresence mode="wait">
+          <motion.div
+            className="flex justify-center flex-wrap"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={{
+              visible: { transition: { staggerChildren: 0.1 } },
+              exit: {
+                transition: { staggerChildren: 0.05, staggerDirection: -1 },
+              },
+            }}
+          >
+            {"PORTFOLIO".split("").map((char, index) => (
+              <span
+                key={index}
+                className="inline-block overflow-hidden py-2 -my-2"
+              >
+                <motion.h1
+                  className="text-[12vw] md:text-[8vw] leading-none font-bold text-center uppercase text-white tracking-[0.05em] drop-shadow-2xl"
+                  variants={{
+                    hidden: { y: "100%" },
+                    visible: {
+                      y: 0,
+                      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+                    },
+                    exit: {
+                      y: "100%",
+                      transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
+                    },
+                  }}
+                >
+                  {char}
+                </motion.h1>
+              </span>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}

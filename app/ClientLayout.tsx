@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import { AppProvider } from "./context";
+import HomeBackground from "./HomeBackground";
 
 const FOXLA_CONTENT = [
   "font-sans font-thin tracking-widest",
@@ -128,7 +129,12 @@ export default function ClientLayout({
         </AnimatePresence>
 
         {!isLoading && (
-          <div className="absolute inset-0 w-full h-full">{children}</div>
+          <>
+            <HomeBackground />
+            <div className="absolute inset-0 z-10 w-full h-full">
+              {children}
+            </div>
+          </>
         )}
       </main>
     </AppProvider>

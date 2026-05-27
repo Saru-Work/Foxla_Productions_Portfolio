@@ -1,0 +1,44 @@
+--- app/portfolio/Gallery3D.tsx
++++ app/portfolio/Gallery3D.tsx
+@@ -15,2 +15,11 @@
+ 
+-function VideoMaterial({ url, hovered }) {
++interface Project {
++  id: string;
++  title: string;
++  subtitle: string;
++  year: string;
++  image: string;
++  video?: string;
++  tags: string[];
++}
++
++function VideoMaterial({ url, hovered }: { url: string; hovered: boolean }) {
+@@ -37,3 +46,10 @@
+ 
+-function ProjectCard({ project, index, total, radius, onSelect, activeIndex }) {
++function ProjectCard({ project, index, total, radius, onSelect, activeIndex }: {
++  project: Project;
++  index: number;
++  total: number;
++  radius: number;
++  onSelect: (p: Project) => void;
++  activeIndex: number;
++}) {
+   const ref = useRef<THREE.Group>(null);
+@@ -102,3 +118,7 @@
+ 
+-function Carousel({ projects, activeIndex, onSelect }) {
++function Carousel({ projects, activeIndex, onSelect }: {
++  projects: Project[];
++  activeIndex: number;
++  onSelect: (p: Project) => void;
++}) {
+   const group = useRef<THREE.Group>(null);
+@@ -128,3 +148,3 @@
+ 
+-export default function Gallery3D({ projects }) {
++export default function Gallery3D({ projects }: { projects: Project[] }) {
+   const [activeIndex, setActiveIndex] = useState(0);
+-  const [selectedProject, setSelectedProject] = useState(null);
++  const [selectedProject, setSelectedProject] = useState<Project | null>(null);

@@ -1,0 +1,45 @@
+@@ -10,7 +10,7 @@
+     year: "2025",
+     image: "https://picsum.photos/seed/photography/1200/800",
+-    video: "https://videos.pexels.com/video-files/3129595/3129595-uhd_2560_1440_30fps.mp4",
++    video: "https://videos.pexels.com/video-files/3129595/3129595-hd_1280_720_30fps.mp4",
+     tags: ["Portrait", "Editorial"],
+   },
+   {
+     id: "2",
+@@ -18,7 +18,7 @@
+     year: "2024",
+     image: "https://picsum.photos/seed/video/1200/800",
+-    video: "https://videos.pexels.com/video-files/5961661/5961661-uhd_2560_1440_30fps.mp4",
++    video: "https://videos.pexels.com/video-files/5961661/5961661-hd_1280_720_30fps.mp4",
+     tags: ["Directing", "Cinematography"],
+   },
+   {
+     id: "3",
+@@ -26,7 +26,7 @@
+     year: "2024",
+     image: "https://picsum.photos/seed/promo/1200/800",
+-    video: "https://videos.pexels.com/video-files/5961655/5961655-uhd_2560_1440_30fps.mp4",
++    video: "https://videos.pexels.com/video-files/5961655/5961655-hd_1280_720_30fps.mp4",
+     tags: ["Commercial", "VFX"],
+   },
+   {
+     id: "4",
+@@ -34,7 +34,7 @@
+     year: "2023",
+     image: "https://picsum.photos/seed/creative/1200/800",
+-    video: "https://videos.pexels.com/video-files/6981412/6981412-uhd_2560_1440_25fps.mp4",
++    video: "https://videos.pexels.com/video-files/6981412/6981412-hd_1280_720_25fps.mp4",
+     tags: ["Creative", "Design"],
+   },
+   {
+     id: "5",
+@@ -42,7 +42,7 @@
+     year: "2023",
+     image: "https://picsum.photos/seed/web/1200/800",
+-    video: "https://videos.pexels.com/video-files/6981410/6981410-uhd_2560_1440_25fps.mp4",
++    video: "https://videos.pexels.com/video-files/6981410/6981410-hd_1280_720_25fps.mp4",
+     tags: ["UX/UI", "Development"],
+   },
+ 
+ 

@@ -1,0 +1,254 @@
+--- app/portfolio/page.tsx
++++ app/portfolio/page.tsx
+@@ -4,4 +4,6 @@
+ import { motion, AnimatePresence, PanInfo } from "motion/react";
+ import Image from "next/image";
++import Gallery3D from "./Gallery3D";
+ 
+ const PROJECTS = [
+@@ -11,4 +13,5 @@
+     year: "2025",
+     image: "https://picsum.photos/seed/nike/1200/800",
++    video: "https://videos.pexels.com/video-files/3129595/3129595-uhd_2560_1440_30fps.mp4",
+     tags: ["Production", "Animation & VFX"],
+   },
+@@ -18,4 +21,5 @@
+     year: "2024",
+     image: "https://picsum.photos/seed/redbull/1200/800",
++    video: "https://videos.pexels.com/video-files/5961661/5961661-uhd_2560_1440_30fps.mp4",
+     tags: ["Directing", "Cinematography"],
+   },
+@@ -25,4 +29,5 @@
+     year: "2024",
+     image: "https://picsum.photos/seed/porsche/1200/800",
++    video: "https://videos.pexels.com/video-files/5961655/5961655-uhd_2560_1440_30fps.mp4",
+     tags: ["Commercial", "VFX"],
+   },
+@@ -32,4 +37,5 @@
+     year: "2023",
+     image: "https://picsum.photos/seed/n/1200/800",
++    video: "https://videos.pexels.com/video-files/6981412/6981412-uhd_2560_1440_25fps.mp4",
+     tags: ["Creative", "VFX"],
+   },
+@@ -39,4 +45,5 @@
+     year: "2023",
+     image: "https://picsum.photos/seed/sony/1200/800",
++    video: "https://videos.pexels.com/video-files/6981410/6981410-uhd_2560_1440_25fps.mp4",
+     tags: ["Color Grading"],
+   },
+@@ -46,4 +53,5 @@
+     year: "2024",
+     image: "https://picsum.photos/seed/apple/1200/800",
++    video: "https://videos.pexels.com/video-files/3129595/3129595-uhd_2560_1440_30fps.mp4",
+     tags: ["Animation", "Post"],
+   },
+@@ -53,4 +61,5 @@
+     year: "2025",
+     image: "https://picsum.photos/seed/adidas/1200/800",
++    video: "https://videos.pexels.com/video-files/5961661/5961661-uhd_2560_1440_30fps.mp4",
+     tags: ["Directing"],
+   },
+@@ -60,4 +69,5 @@
+     year: "2024",
+     image: "https://picsum.photos/seed/bmw/1200/800",
++    video: "https://videos.pexels.com/video-files/6981412/6981412-uhd_2560_1440_25fps.mp4",
+     tags: ["Editing", "Color"],
+   },
+@@ -66,155 +76,51 @@
+ export default function Portfolio() {
+   const [mounted, setMounted] = useState(false);
+-  const [windowWidth, setWindowWidth] = useState(1024);
+ 
+   useEffect(() => {
+     // eslint-disable-next-line react-hooks/set-state-in-effect
+     setMounted(true);
+-    const updateSize = () => setWindowWidth(window.innerWidth);
+-    updateSize();
+-    window.addEventListener("resize", updateSize);
+-    return () => window.removeEventListener("resize", updateSize);
+   }, []);
+ 
+-  const [activeProject, setActiveProject] = useState(
+-    Math.floor(PROJECTS.length / 2),
+-  );
+-
+-  const handleDragEnd = (_: any, info: PanInfo) => {
+-    const threshold = 50;
+-    const velocityThreshold = 400;
+-
+-    if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
+-      handleNext();
+-    } else if (
+-      info.offset.x > threshold ||
+-      info.velocity.x > velocityThreshold
+-    ) {
+-      handlePrev();
+-    }
+-  };
+-
+-  const handleNext = () =>
+-    setActiveProject((prev) => Math.min(prev + 1, PROJECTS.length - 1));
+-  const handlePrev = () => setActiveProject((prev) => Math.max(prev - 1, 0));
+-
+-  const spacingX = windowWidth < 640 ? 140 : windowWidth < 1024 ? 200 : 300;
++  if (!mounted) return null;
+ 
+   return (
+-    <div className="absolute inset-0 w-full h-full text-text overflow-y-auto pointer-events-auto no-scrollbar">
+-      {/* Hero Text Section */}
+-      <div className="w-full h-full flex flex-col items-center justify-center shrink-0 min-h-[50vh]">
++    <div className="absolute inset-0 w-full h-full text-text overflow-hidden bg-background">
++      {/* 3D Gallery overlay */}
++      <Gallery3D projects={PROJECTS} />
++      
++      {/* Hero Text Section Header - pointer events none so it doesn't block 3D scene */}
++      <div className="absolute top-[20%] left-0 w-full flex flex-col items-center justify-center shrink-0 mix-blend-difference pointer-events-none z-10 px-4">
+         <AnimatePresence mode="wait">
+           <motion.div
+-            className="flex justify-center pointer-events-none z-0"
++            className="flex justify-center flex-wrap"
+             initial="hidden"
+             animate="visible"
+             exit="exit"
+             variants={{
+               visible: { transition: { staggerChildren: 0.1 } },
+               exit: {
+                 transition: { staggerChildren: 0.05, staggerDirection: -1 },
+               },
+             }}
+           >
+-            {"PORTFOLIO".split("").map((char, index) => (
++            {"SHOWCASE".split("").map((char, index) => (
+               <span
+                 key={index}
+                 className="inline-block overflow-hidden py-2 -my-2"
+               >
+                 <motion.h1
+-                  className="text-[14vw] md:text-[12vw] leading-none font-bold text-center uppercase text-text tracking-[0.05em] drop-shadow-xl"
++                  className="text-[12vw] md:text-[8vw] leading-none font-bold text-center uppercase text-white tracking-[0.05em] drop-shadow-2xl"
+                   variants={{
+                     hidden: { y: "100%" },
+                     visible: {
+                       y: 0,
+                       transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+                     },
+                     exit: {
+                       y: "100%",
+                       transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
+                     },
+                   }}
+                 >
+                   {char}
+                 </motion.h1>
+               </span>
+             ))}
+           </motion.div>
+         </AnimatePresence>
+       </div>
+-
+-      {/* 3D Coverflow Section */}
+-      <div className="w-full min-h-[100dvh] flex flex-col items-center justify-center relative overflow-hidden">
+-        {/* Coverflow Container */}
+-        <div
+-          className="relative w-full h-[50vh] xl:h-[60vh] flex items-center justify-center z-10"
+-          style={{ perspective: "1000px" }}
+-        >
+-          {mounted && (
+-            <motion.div
+-              className="relative w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing"
+-              drag="x"
+-              dragConstraints={{ left: 0, right: 0 }}
+-              dragElastic={0.05}
+-              onDragEnd={handleDragEnd}
+-              style={{ transformStyle: "preserve-3d" }}
+-            >
+-              {PROJECTS.map((project, i) => {
+-                const offset = i - activeProject;
+-                const isFront = offset === 0;
+-
+-                const rotateY = isFront ? 0 : offset < 0 ? 30 : -30;
+-                const x = offset * spacingX;
+-                const z = Math.abs(offset) * -150 - (isFront ? 0 : 50);
+-                const scale = isFront ? 1 : 0.85;
+-                const opacity = Math.abs(offset) > 3 ? 0 : isFront ? 1 : 0.4;
+-
+-                return (
+-                  <motion.div
+-                    key={project.id}
+-                    className="absolute w-[260px] sm:w-[320px] md:w-[450px] aspect-[4/5] sm:aspect-[16/10] bg-background/80 backdrop-blur-md border border-text/10 shadow-[0_0_15px_rgba(0,0,0,0.1)] overflow-hidden group origin-center"
+-                    initial={false}
+-                    animate={{
+-                      x,
+-                      z,
+-                      scale,
+-                      rotateY,
+-                      opacity,
+-                      zIndex: PROJECTS.length - Math.abs(offset),
+-                    }}
+-                    transition={{ type: "spring", stiffness: 70, damping: 20 }}
+-                    style={{
+-                      transformStyle: "preserve-3d",
+-                      pointerEvents: isFront ? "auto" : "none",
+-                      WebkitBoxReflect:
+-                        "below 5px linear-gradient(to bottom, transparent, transparent 50%, rgba(0,0,0,0.3))",
+-                    }}
+-                  >
+-                    <Image
+-                      src={project.image}
+-                      alt={project.title}
+-                      fill
+-                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+-                    />
+-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
+-                      <motion.h3
+-                        className="text-xl md:text-2xl font-bold uppercase tracking-wider text-white"
+-                        layoutId={`title-${project.id}`}
+-                      >
+-                        {project.title}
+-                      </motion.h3>
+-                      <p className="text-secondary text-sm font-medium tracking-[0.2em] uppercase mt-1">
+-                        {project.subtitle}
+-                      </p>
+-                      <div className="flex gap-2 mt-4 overflow-hidden">
+-                        {project.tags.map((tag) => (
+-                          <span
+-                            key={tag}
+-                            className="bg-white/10 backdrop-blur-sm px-2 py-1 text-[10px] uppercase font-bold tracking-widest text-white rounded-sm border border-white/20"
+-                          >
+-                            {tag}
+-                          </span>
+-                        ))}
+-                      </div>
+-                    </div>
+-                  </motion.div>
+-                );
+-              })}
+-            </motion.div>
+-          )}
+-        </div>
+-
+-        {/* Navigation Indicators */}
+-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center justify-center gap-4 z-20 pointer-events-auto">
+-          <button
+-            onClick={handlePrev}
+-            className="w-10 h-10 flexItems-center justify-center rounded-full border border-text/20 hover:bg-white/5 transition-colors"
+-            disabled={activeProject === 0}
+-          >
+-            ←
+-          </button>
+-          <div className="text-sm font-bold tracking-widest uppercase">
+-            {String(activeProject + 1).padStart(2, "0")} /{" "}
+-            {String(PROJECTS.length).padStart(2, "0")}
+-          </div>
+-          <button
+-            onClick={handleNext}
+-            className="w-10 h-10 flexItems-center justify-center rounded-full border border-text/20 hover:bg-white/5 transition-colors"
+-            disabled={activeProject === PROJECTS.length - 1}
+-          >
+-            →
+-          </button>
+-        </div>
+-      </div>
+     </div>
+   );
+ }

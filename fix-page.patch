@@ -1,0 +1,100 @@
+--- app/portfolio/page.tsx
++++ app/portfolio/page.tsx
+@@ -58,9 +58,11 @@
+ export default function Portfolio() {
+   return (
+-    <div className="absolute inset-0 w-full h-full text-text overflow-hidden bg-transparent">
+-      <Gallery3D projects={PROJECTS} />
+-
+-      <div className="absolute top-[20%] left-0 w-full flex flex-col items-center justify-center shrink-0 mix-blend-overlay opacity-30 pointer-events-none z-10 px-4">
+-        <AnimatePresence mode="wait">
+-          <motion.div
+-            className="flex justify-center flex-wrap"
+-            initial="hidden"
+-            animate="visible"
+-            exit="exit"
+-            variants={{
+-              visible: { transition: { staggerChildren: 0.1 } },
+-              exit: {
+-                transition: { staggerChildren: 0.05, staggerDirection: -1 },
+-              },
+-            }}
+-          >
+-            {"PORTFOLIO".split("").map((char, index) => (
+-              <span
+-                key={index}
+-                className="inline-block overflow-hidden py-2 -my-2"
+-              >
+-                <motion.h1
+-                  className="text-[12vw] md:text-[8vw] leading-none font-bold text-center uppercase text-white tracking-[0.05em] drop-shadow-2xl"
+-                  variants={{
+-                    hidden: { y: "100%" },
+-                    visible: {
+-                      y: 0,
+-                      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+-                    },
+-                    exit: {
+-                      y: "100%",
+-                      transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
+-                    },
+-                  }}
+-                >
+-                  {char}
+-                </motion.h1>
+-              </span>
+-            ))}
+-          </motion.div>
+-        </AnimatePresence>
+-      </div>
++    <div className="absolute inset-0 w-full h-full text-text overflow-y-auto overflow-x-hidden scroll-smooth snap-y snap-mandatory bg-transparent pointer-events-auto z-10">
++      {/* HERO SECTION */}
++      <section className="relative w-full h-[100dvh] flex flex-col items-center justify-center shrink-0 snap-center pointer-events-none">
++        <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center mix-blend-overlay opacity-100 z-10 px-4">
++          <AnimatePresence mode="wait">
++            <motion.div
++              className="flex justify-center flex-wrap"
++              initial="hidden"
++              animate="visible"
++              exit="exit"
++              variants={{
++                visible: { transition: { staggerChildren: 0.1 } },
++                exit: {
++                  transition: { staggerChildren: 0.05, staggerDirection: -1 },
++                },
++              }}
++            >
++              {"PORTFOLIO".split("").map((char, index) => (
++                <span
++                  key={index}
++                  className="inline-block overflow-hidden py-2 -my-2"
++                >
++                  <motion.h1
++                    className="text-[20vw] md:text-[18vw] leading-none font-black text-center uppercase text-white tracking-[0.02em] drop-shadow-2xl"
++                    variants={{
++                      hidden: { y: "100%" },
++                      visible: {
++                        y: 0,
++                        transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
++                      },
++                      exit: {
++                        y: "100%",
++                        transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
++                      },
++                    }}
++                  >
++                    {char}
++                  </motion.h1>
++                </span>
++              ))}
++            </motion.div>
++          </AnimatePresence>
++        </div>
++      </section>
++
++      {/* GALLERY SECTION */}
++      <section className="relative w-full h-[100dvh] shrink-0 snap-center">
++        <Gallery3D projects={PROJECTS} />
++      </section>
+     </div>
+   );
+ }

@@ -1,0 +1,59 @@
+--- app/portfolio/Gallery3D.tsx
++++ app/portfolio/Gallery3D.tsx
+@@ -23,6 +23,7 @@
+     vid.loop = true;
+     vid.muted = true;
+     vid.playsInline = true;
++    vid.preload = "none";
+     return vid;
+   }, [url]);
+ 
+@@ -43,6 +44,15 @@
+     return tex;
+   }, [video]);
+ 
++  useEffect(() => {
++    return () => {
++      texture.dispose();
++      video.pause();
++      video.removeAttribute('src');
++      video.load();
++    };
++  }, [texture, video]);
++
+   return <meshBasicMaterial map={texture} toneMapped={false} />;
+ }
+ 
+@@ -107,17 +117,21 @@
+         onPointerOver={(e) => {
+           e.stopPropagation();
+           setHovered(true);
+         }}
+         onPointerOut={() => setHovered(false)}
+       >
+-        <planeGeometry args={[cardWidth, cardHeight]} />
+-        {hovered && project.video ? (
+-          <VideoMaterial url={project.video} hovered={hovered} />
+-        ) : (
+-          <DreiImage
+-            url={project.image}
+-            transparent
+-            opacity={hovered ? 1 : 0.6}
+-            toneMapped={false}
+-          />
+-        )}
++        {project.video && (
++          <mesh position={[0, 0, -0.005]}>
++            <planeGeometry args={[cardWidth, cardHeight]} />
++            <VideoMaterial url={project.video} hovered={hovered} />
++          </mesh>
++        )}
++        
++        <DreiImage
++          url={project.image}
++          transparent
++          opacity={hovered && project.video ? 0 : (hovered ? 1 : 0.6)}
++          toneMapped={false}
++        />
+ 
+         {/* Glow effect when hovered */}

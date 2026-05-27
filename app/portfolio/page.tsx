@@ -1,120 +1,87 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, PanInfo } from "motion/react";
-import Image from "next/image";
+import React from "react";
+import { motion, AnimatePresence } from "motion/react";
+import dynamic from "next/dynamic";
+
+const Gallery3D = dynamic(() => import("./Gallery3D"), { ssr: false });
 
 const PROJECTS = [
   {
     id: "1",
-    title: "POWERADE",
-    subtitle: "College Football",
+    title: "Photography",
+    subtitle: "Fashion & Lifestyle",
     year: "2025",
-    image: "https://picsum.photos/seed/nike/1200/800",
-    tags: ["Production", "Animation & VFX"],
+    image: "https://picsum.photos/seed/photography/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/3129595/3129595-hd_1280_720_30fps.mp4",
+    tags: ["Portrait", "Editorial"],
   },
   {
     id: "2",
-    title: "RED BULL",
-    subtitle: "Racing Doc",
+    title: "End to end video production",
+    subtitle: "Racing Documentary",
     year: "2024",
-    image: "https://picsum.photos/seed/redbull/1200/800",
+    image: "https://picsum.photos/seed/video/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/5961661/5961661-hd_1280_720_30fps.mp4",
     tags: ["Directing", "Cinematography"],
   },
   {
     id: "3",
-    title: "PORSCHE",
-    subtitle: "911 GT3 RS",
+    title: "Commercial ads",
+    subtitle: "Automotive Campaign",
     year: "2024",
-    image: "https://picsum.photos/seed/porsche/1200/800",
+    image: "https://picsum.photos/seed/promo/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/5961655/5961655-hd_1280_720_30fps.mp4",
     tags: ["Commercial", "VFX"],
   },
   {
     id: "4",
-    title: "NIKE",
-    subtitle: "Just Do It",
+    title: "Creative Direction and Design",
+    subtitle: "Brand Identity",
     year: "2023",
-    image: "https://picsum.photos/seed/n/1200/800",
-    tags: ["Creative", "VFX"],
+    image: "https://picsum.photos/seed/creative/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/6981412/6981412-hd_1280_720_25fps.mp4",
+    tags: ["Creative", "Design"],
   },
   {
     id: "5",
-    title: "SONY",
-    subtitle: "Bravia",
+    title: "Website Design and Development",
+    subtitle: "Interactive Experiences",
     year: "2023",
-    image: "https://picsum.photos/seed/sony/1200/800",
-    tags: ["Color Grading"],
+    image: "https://picsum.photos/seed/web/1200/800",
+    video:
+      "https://videos.pexels.com/video-files/6981410/6981410-hd_1280_720_25fps.mp4",
+    tags: ["UX/UI", "Development"],
+  },
+];
+
+const SERVICES = [
+  {
+    title: "Art Direction",
+    desc: "Crafting unique visual identities and brand narratives.",
   },
   {
-    id: "6",
-    title: "APPLE",
-    subtitle: "Vision Pro",
-    year: "2024",
-    image: "https://picsum.photos/seed/apple/1200/800",
-    tags: ["Animation", "Post"],
+    title: "Cinematography",
+    desc: "High-end video production and lighting design.",
   },
   {
-    id: "7",
-    title: "ADIDAS",
-    subtitle: "Originals",
-    year: "2025",
-    image: "https://picsum.photos/seed/adidas/1200/800",
-    tags: ["Directing"],
-  },
-  {
-    id: "8",
-    title: "BMW",
-    subtitle: "M Series",
-    year: "2024",
-    image: "https://picsum.photos/seed/bmw/1200/800",
-    tags: ["Editing", "Color"],
+    title: "Digital Design",
+    desc: "Immersive UI/UX and interactive web experiences.",
   },
 ];
 
 export default function Portfolio() {
-  const [mounted, setMounted] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(1024);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-    const updateSize = () => setWindowWidth(window.innerWidth);
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-
-  const [activeProject, setActiveProject] = useState(
-    Math.floor(PROJECTS.length / 2),
-  );
-
-  const handleDragEnd = (_: any, info: PanInfo) => {
-    const threshold = 50;
-    const velocityThreshold = 400;
-
-    if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
-      handleNext();
-    } else if (
-      info.offset.x > threshold ||
-      info.velocity.x > velocityThreshold
-    ) {
-      handlePrev();
-    }
-  };
-
-  const handleNext = () =>
-    setActiveProject((prev) => Math.min(prev + 1, PROJECTS.length - 1));
-  const handlePrev = () => setActiveProject((prev) => Math.max(prev - 1, 0));
-
-  const spacingX = windowWidth < 640 ? 140 : windowWidth < 1024 ? 200 : 300;
-
   return (
-    <div className="absolute inset-0 w-full h-full text-text overflow-y-auto pointer-events-auto no-scrollbar">
-      {/* Hero Text Section */}
-      <div className="w-full h-full flex flex-col items-center justify-center shrink-0 min-h-[50vh]">
+    <div className="absolute inset-0 w-full h-full text-zinc-100 overflow-y-auto overflow-x-hidden scroll-smooth snap-y snap-mandatory bg-transparent pointer-events-auto z-10 selection:bg-white selection:text-black">
+      {/* 1. HERO SECTION */}
+      <section className="relative w-full h-[60dvh] shrink-0 snap-center pointer-events-none flex flex-col items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.div
-            className="flex justify-center pointer-events-none z-0"
+            className="flex flex-col items-center justify-center mix-blend-overlay opacity-100 z-10 whitespace-nowrap"
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -125,191 +92,252 @@ export default function Portfolio() {
               },
             }}
           >
-            {"PORTFOLIO".split("").map((char, index) => (
-              <span
-                key={index}
-                className="inline-block overflow-hidden py-2 -my-2"
-              >
-                <motion.h1
-                  className="text-[14vw] md:text-[12vw] leading-none font-bold text-center uppercase text-text tracking-[0.05em] drop-shadow-xl"
-                  variants={{
-                    hidden: { y: "100%" },
-                    visible: {
-                      y: 0,
-                      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
-                    },
-                    exit: {
-                      y: "100%",
-                      transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
-                    },
-                  }}
-                >
-                  {char}
-                </motion.h1>
-              </span>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* 3D Coverflow Section */}
-      <div className="w-full min-h-[100dvh] flex flex-col items-center justify-center relative overflow-hidden">
-        {/* Coverflow Container */}
-        <div
-          className="relative w-full h-[50vh] xl:h-[60vh] flex items-center justify-center z-10"
-          style={{ perspective: "1000px" }}
-        >
-          {mounted && (
-            <motion.div
-              className="relative w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing"
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.05}
-              onDragEnd={handleDragEnd}
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              {PROJECTS.map((project, i) => {
-                const offset = i - activeProject;
-                const isFront = offset === 0;
-
-                const rotateY = isFront ? 0 : offset < 0 ? 30 : -30;
-                const x = offset * spacingX;
-                const z = Math.abs(offset) * -150 - (isFront ? 0 : 50);
-                const scale = isFront ? 1 : 0.85;
-                const opacity = Math.abs(offset) > 3 ? 0 : isFront ? 1 : 0.4;
-
-                return (
-                  <motion.div
-                    key={project.id}
-                    className="absolute w-[260px] sm:w-[320px] md:w-[450px] aspect-[4/5] sm:aspect-[16/10] bg-background/80 backdrop-blur-md border border-text/10 shadow-[0_0_15px_rgba(0,0,0,0.1)] overflow-hidden group origin-center"
-                    initial={false}
-                    animate={{
-                      x,
-                      z,
-                      scale,
-                      rotateY,
-                      opacity,
-                      zIndex: PROJECTS.length - Math.abs(offset),
-                    }}
-                    transition={{ type: "spring", stiffness: 70, damping: 20 }}
-                    style={{
-                      transformStyle: "preserve-3d",
-                      pointerEvents: isFront ? "auto" : "none",
-                      WebkitBoxReflect:
-                        "below 5px linear-gradient(to bottom, transparent, transparent 50%, rgba(0,0,0,0.3))",
+            {/* Main Title */}
+            {/* Added a responsive gap here (gap-1 md:gap-3) to control letter spacing nicely */}
+            <div className="flex flex-row overflow-hidden pb-2 gap-1 sm:gap-1 md:gap-1 lg:gap-1">
+              {"PORTFOLIO".split("").map((char, index) => (
+                <span key={index} className="block overflow-hidden py-4 -my-4">
+                  <motion.h1
+                    // Removed 'tracking-tighter' from here so it doesn't squish the characters
+                    className="text-[12vw] sm:text-[10vw] leading-none font-black text-center uppercase text-white drop-shadow-2xl"
+                    variants={{
+                      hidden: { y: "100%", opacity: 0, rotate: 5 },
+                      visible: {
+                        y: 0,
+                        opacity: 1,
+                        rotate: 0,
+                        transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+                      },
+                      exit: {
+                        y: "-100%",
+                        opacity: 0,
+                        transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
+                      },
                     }}
                   >
-                    <div className="w-full h-full flex flex-col relative">
-                      {/* Image Area */}
-                      <div className="relative w-full flex-1 overflow-hidden pointer-events-none">
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/50 z-10 group-hover:opacity-0 transition-opacity duration-500" />
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          className={`object-cover transition-all duration-700 ease-[0.16,1,0.3,1] will-change-transform ${isFront ? "grayscale-0 opacity-100 scale-105 group-hover:scale-110" : "grayscale opacity-60 scale-100"}`}
-                        />
-                      </div>
-
-                      {/* Content Area */}
-                      <div
-                        className="h-[90px] sm:h-[110px] flex flex-col justify-center px-4 sm:px-6 bg-background/80 backdrop-blur-lg border-t border-text/10"
-                        style={{ transform: "translateZ(1px)" }}
-                      >
-                        <div className="flex justify-between items-end mb-2 gap-4 text-left">
-                          <h3 className="font-[family-name:var(--font-archivo-black)] text-xl sm:text-2xl lg:text-3xl uppercase tracking-tighter leading-none group-hover:text-accent transition-colors truncate">
-                            {project.title}
-                          </h3>
-                          <span className="text-secondary font-mono text-sm sm:text-base leading-none">
-                            0{project.id}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center w-full gap-4 text-left">
-                          <p className="text-xs sm:text-sm text-text/60 tracking-wide font-medium truncate">
-                            {project.subtitle}
-                          </p>
-                          <p className="text-[10px] sm:text-xs text-text/40 font-mono flex-shrink-0">
-                            {project.year}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          )}
-        </div>
-
-        {/* Carousel UI Controls & Info */}
-        <div className="w-full max-w-lg mx-auto flex flex-col items-center justify-center gap-8 py-12 z-20 pointer-events-auto px-6">
-          <div className="flex items-center justify-between w-full">
-            <button
-              onClick={handlePrev}
-              disabled={activeProject === 0}
-              className="p-3 text-text/60 hover:text-text border border-text/20 hover:border-text transition-all rounded-full hover:bg-text/5 backdrop-blur-sm disabled:opacity-30 disabled:hover:border-text/20 disabled:hover:bg-transparent"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </button>
-
-            <div className="flex flex-col items-center gap-2">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeProject}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex flex-wrap justify-center gap-2"
-                >
-                  {PROJECTS[activeProject]?.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1.5 sm:px-4 sm:py-2 bg-text text-background text-[10px] sm:text-xs uppercase tracking-widest font-medium"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
+                    {char}
+                  </motion.h1>
+                </span>
+              ))}
             </div>
 
-            <button
-              onClick={handleNext}
-              disabled={activeProject === PROJECTS.length - 1}
-              className="p-3 text-text/60 hover:text-text border border-text/20 hover:border-text transition-all rounded-full hover:bg-text/5 backdrop-blur-sm disabled:opacity-30 disabled:hover:border-text/20 disabled:hover:bg-transparent"
+            {/* Subtitle */}
+            <motion.p
+              className="mt-2 text-sm md:text-lg font-light tracking-[0.3em] uppercase text-white/80"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, delay: 0.6, ease: "easeOut" },
+                },
+              }}
             >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </button>
-          </div>
+              Creative Director & Developer
+            </motion.p>
+          </motion.div>
+        </AnimatePresence>
 
-          <div className="font-mono text-[10px] text-text/40 tracking-widest uppercase flex items-center gap-2 mt-4">
-            Swipe or use arrows to navigate
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 1 }}
+        >
+          <span className="text-xs tracking-[0.2em] text-white/50 uppercase">
+            Scroll
+          </span>
+          <motion.div
+            className="w-[1px] h-12 bg-gradient-to-b from-white/50 to-transparent origin-top"
+            animate={{ scaleY: [0, 1, 0], translateY: [0, 10, 20] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
+      </section>
+
+      {/* 2. ABOUT SECTION */}
+      <section className="relative w-full h-[100dvh] shrink-0 snap-always snap-center flex items-center justify-center px-6 md:px-20 pointer-events-auto">
+        <motion.div
+          className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.4 }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+          }}
+        >
+          <motion.div
+            className="aspect-[4/5] w-full max-w-sm mx-auto rounded-2xl overflow-hidden relative shadow-2xl border border-white/10"
+            variants={{
+              hidden: { opacity: 0, scale: 0.9, rotate: -2 },
+              visible: {
+                opacity: 1,
+                scale: 1,
+                rotate: 0,
+                transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+              },
+            }}
+          >
+            {/* Placeholder for a portrait - replace with your own */}
+            <img
+              src="https://picsum.photos/seed/portrait/800/1000"
+              alt="Portrait"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          </motion.div>
+
+          <motion.div className="flex flex-col gap-6 p-6 rounded-2xl bg-black/20 backdrop-blur-md border border-white/5">
+            <motion.h2
+              className="text-4xl md:text-6xl font-bold tracking-tighter"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+              }}
+            >
+              CRAFTING <br />
+              <span className="text-white/50 italic font-serif">
+                visual stories.
+              </span>
+            </motion.h2>
+            <motion.p
+              className="text-white/70 text-lg leading-relaxed font-light"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+              }}
+            >
+              I am a multidisciplinary creator bridging the gap between high-end
+              cinematography, creative direction, and immersive digital
+              experiences. Every frame, every pixel, and every line of code is
+              designed to leave a lasting impact.
+            </motion.p>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* 3. SERVICES SECTION */}
+      <section className="relative w-full h-[100dvh] shrink-0 snap-always snap-center flex flex-col items-center justify-center px-6 md:px-20 pointer-events-auto">
+        <motion.div
+          className="w-full max-w-6xl"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
+        >
+          <motion.h2
+            className="text-xs tracking-[0.3em] uppercase text-white/50 mb-12 text-center"
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
+            Areas of Expertise
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {SERVICES.map((service, idx) => (
+              <motion.div
+                key={idx}
+                className="group p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors cursor-pointer"
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.6, ease: "easeOut" },
+                  },
+                }}
+              >
+                <div className="text-3xl font-light text-white/30 group-hover:text-white/80 transition-colors mb-4">
+                  0{idx + 1}
+                </div>
+                <h3 className="text-2xl font-bold mb-3 tracking-tight">
+                  {service.title}
+                </h3>
+                <p className="text-white/60 font-light leading-relaxed">
+                  {service.desc}
+                </p>
+              </motion.div>
+            ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </section>
+
+      {/* 4. GALLERY SECTION (3D) */}
+      <section className="relative w-full shrink-0 snap-always snap-center pointer-events-auto">
+        <Gallery3D projects={PROJECTS} />
+      </section>
+
+      {/* 5. CONTACT SECTION */}
+      <section className="relative w-full h-[100dvh] shrink-0 snap-always snap-center flex items-center justify-center px-6 pointer-events-auto">
+        <motion.div
+          className="flex flex-col items-center text-center gap-8 bg-black/40 p-12 md:p-24 rounded-3xl backdrop-blur-xl border border-white/10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.5 }}
+          variants={{
+            hidden: { opacity: 0, scale: 0.95 },
+            visible: {
+              opacity: 1,
+              scale: 1,
+              transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+            },
+          }}
+        >
+          <motion.h2
+            className="text-5xl md:text-8xl font-black tracking-tighter uppercase"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
+            Let's{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-300 to-zinc-600">
+              Work
+            </span>
+          </motion.h2>
+          <motion.p
+            className="text-lg md:text-xl text-white/60 font-light max-w-md"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
+            Ready to bring your next big idea to life? Drop me a message and
+            let's create something extraordinary.
+          </motion.p>
+          <motion.button
+            className="mt-4 px-8 py-4 bg-white text-black rounded-full font-bold tracking-widest uppercase text-sm hover:scale-105 transition-transform"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
+            Get in touch
+          </motion.button>
+
+          <motion.div
+            className="flex gap-6 mt-12 text-sm tracking-widest uppercase text-white/40"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { delay: 0.4 } },
+            }}
+          >
+            <a href="#" className="hover:text-white transition-colors">
+              Instagram
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              LinkedIn
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Twitter
+            </a>
+          </motion.div>
+        </motion.div>
+      </section>
     </div>
   );
 }

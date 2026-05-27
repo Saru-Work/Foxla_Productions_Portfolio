@@ -1,0 +1,8 @@
+--- app/portfolio/page.tsx
++++ app/portfolio/page.tsx
+@@ -4,3 +4,4 @@
+ import { motion, AnimatePresence } from "motion/react";
+-import Gallery3D from "./Gallery3D";
++import dynamic from "next/dynamic";
++const Gallery3D = dynamic(() => import("./Gallery3D"), { ssr: false });
+ 
