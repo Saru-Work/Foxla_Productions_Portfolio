@@ -288,7 +288,7 @@ export default function Portfolio() {
           }}
         >
           <motion.h2
-            className="text-5xl md:text-8xl font-black tracking-tighter uppercase"
+            className="text-5xl md:text-8xl font-black uppercase"
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 },
