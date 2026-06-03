@@ -1,8 +1,25 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useAppContext } from "../context";
+
+// 1. Import standard Firebase SDK modules
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+
+// Make sure you place your 'firebase-config.js' (or .ts) in the same folder as this file,
+// or update the path below to wherever it lives!
+import { firebaseConfig } from "@/lib/.firebase-config";
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const CONTACT_SLIDES = [
   {
@@ -47,6 +64,21 @@ export default function Contact() {
   const { homeIndex, setHomeIndex } = useAppContext();
   const isScrolling = useRef(false);
 
+  // 2. Add Form State
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    service: "",
+    project: "",
+  });
+
+  // Track button UI state
+  const [buttonState, setButtonState] = useState({
+    text: "Send Message →",
+    status: "idle", // 'idle' | 'sending' | 'success' | 'error'
+  });
+
   useEffect(() => {
     setHomeIndex(0);
 
@@ -75,12 +107,53 @@ export default function Contact() {
     return () => window.removeEventListener("wheel", handleWheel);
   }, [setHomeIndex]);
 
+  // 4. The Firebase Submit Function
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // Stop page reload
+
+    if (!formData.email || !formData.project) {
+      alert("Please fill in your email and project details.");
+      return;
+    }
+
+    setButtonState({ text: "Sending...", status: "sending" });
+
+    try {
+      await addDoc(collection(db, "messages"), {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        service: formData.service,
+        projectDetails: formData.project,
+        createdAt: serverTimestamp(),
+      });
+
+      setButtonState({ text: "Message Sent ✓", status: "success" });
+
+      // Clear form inputs
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        service: "",
+        project: "",
+      });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      setButtonState({ text: "Error. Try Again.", status: "error" });
+    }
+
+    // Reset button after 3.5s (just like your old script)
+    setTimeout(() => {
+      setButtonState({ text: "Send Message →", status: "idle" });
+    }, 3500);
+  };
+
   const safeIndex = Math.min(homeIndex, CONTACT_SLIDES.length - 1);
   const currentSlide = CONTACT_SLIDES[safeIndex];
 
   return (
     <div className="absolute top-[50%] left-0 w-full -translate-y-1/2 flex flex-col items-center justify-center px-6 md:px-12 z-10">
-      {/* FIX: Changed -top-32 md:-top-40 to top-0 md:-top-8 so it sits below the header logo */}
       <div className="absolute top-0 md:-top-8 flex justify-center w-full pointer-events-none">
         <AnimatePresence mode="wait">
           <motion.div
@@ -189,8 +262,10 @@ export default function Contact() {
             </motion.div>
           )}
 
+          {/* 3. Bind the form inputs to state and add onSubmit */}
           {currentSlide.type === "form" && (
             <motion.form
+              onSubmit={handleSubmit}
               key="form"
               className="w-full max-w-2xl flex flex-col gap-4 text-left pointer-events-auto bg-black/40 p-6 md:p-8 backdrop-blur-md border border-text/10"
               initial={{ y: 50, opacity: 0 }}
@@ -206,6 +281,10 @@ export default function Contact() {
                   <input
                     type="text"
                     placeholder="Alex"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
                     className="w-full bg-transparent border-b border-text/30 py-1 text-text text-sm transition-colors focus:border-text outline-none placeholder:text-text/20"
                   />
                 </div>
@@ -216,6 +295,10 @@ export default function Contact() {
                   <input
                     type="text"
                     placeholder="Morgan"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
                     className="w-full bg-transparent border-b border-text/30 py-1 text-text text-sm transition-colors focus:border-text outline-none placeholder:text-text/20"
                   />
                 </div>
@@ -228,6 +311,10 @@ export default function Contact() {
                 <input
                   type="email"
                   placeholder="alex@company.com"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-text/30 py-1 text-text text-sm transition-colors focus:border-text outline-none placeholder:text-text/20"
                 />
               </div>
@@ -236,31 +323,50 @@ export default function Contact() {
                 <label className="text-[9px] uppercase tracking-widest text-text/50 mb-1">
                   Service
                 </label>
-                <select className="w-full bg-transparent border-b border-text/30 py-1 text-text text-sm transition-colors focus:border-text outline-none appearance-none cursor-pointer">
-                  <option
-                    className="bg-background text-text"
-                    value=""
-                    disabled
-                    selected
-                  >
+                <select
+                  value={formData.service}
+                  onChange={(e) =>
+                    setFormData({ ...formData, service: e.target.value })
+                  }
+                  className="w-full bg-transparent border-b border-text/30 py-1 text-text text-sm transition-colors focus:border-text outline-none appearance-none cursor-pointer"
+                >
+                  <option className="bg-background text-text" value="" disabled>
                     Select a service
                   </option>
-                  <option className="bg-background text-text">
+                  <option
+                    className="bg-background text-text"
+                    value="Photography"
+                  >
                     Photography
                   </option>
-                  <option className="bg-background text-text">
+                  <option
+                    className="bg-background text-text"
+                    value="Video Production"
+                  >
                     Video Production
                   </option>
-                  <option className="bg-background text-text">
+                  <option
+                    className="bg-background text-text"
+                    value="Commercial Ad"
+                  >
                     Commercial Ad
                   </option>
-                  <option className="bg-background text-text">
+                  <option
+                    className="bg-background text-text"
+                    value="Creative Direction"
+                  >
                     Creative Direction
                   </option>
-                  <option className="bg-background text-text">
+                  <option
+                    className="bg-background text-text"
+                    value="Website Design & Development"
+                  >
                     Website Design & Development
                   </option>
-                  <option className="bg-background text-text">
+                  <option
+                    className="bg-background text-text"
+                    value="Full Campaign"
+                  >
                     Full Campaign
                   </option>
                 </select>
@@ -273,15 +379,26 @@ export default function Contact() {
                 <textarea
                   placeholder="What are you building? What's the vision?"
                   rows={2}
+                  value={formData.project}
+                  onChange={(e) =>
+                    setFormData({ ...formData, project: e.target.value })
+                  }
                   className="w-full bg-transparent border-b border-text/30 py-1 text-text text-sm transition-colors focus:border-text outline-none placeholder:text-text/20 resize-none"
                 />
               </div>
 
               <button
-                type="button"
-                className="w-full mt-2 bg-text text-background font-bold text-sm uppercase tracking-widest py-3 hover:bg-text/80 transition-colors"
+                type="submit"
+                disabled={buttonState.status === "sending"}
+                className={`w-full mt-2 font-bold text-sm uppercase tracking-widest py-3 transition-all duration-300 ${
+                  buttonState.status === "success"
+                    ? "bg-[#1f5c35] text-white"
+                    : buttonState.status === "error"
+                      ? "bg-[#7c1010] text-white"
+                      : "bg-text text-background hover:bg-text/80"
+                } ${buttonState.status === "sending" ? "opacity-70" : "opacity-100"}`}
               >
-                Send Message →
+                {buttonState.text}
               </button>
             </motion.form>
           )}

@@ -301,40 +301,31 @@ export default function Template({ children }: { children: React.ReactNode }) {
             </div>
           )}
 
+          {/* Bottom Footer Links */}
           <div className="flex flex-col md:flex-row justify-between items-center text-[8px] md:text-[10px] text-text/50 tracking-wider gap-4 md:gap-0 mt-4">
+            {/* Left Column (1/3 width) */}
             <div className="md:flex-1 text-center md:text-left">
               © 2026 Foxla All rights reserved.
             </div>
 
+            {/* Middle Column (1/3 width) */}
             <div className="flex gap-4 md:gap-6 md:flex-1 justify-center">
-              <a href="#" className="hover:text-accent transition-colors">
+              <a
+                href="https://www.instagram.com/foxlaproductions/"
+                className="hover:text-accent transition-colors"
+              >
                 Instagram
               </a>
-              <a href="#" className="hover:text-accent transition-colors">
+              <a
+                href="https://www.linkedin.com/company/foxlaproductions/"
+                className="hover:text-accent transition-colors"
+              >
                 LinkedIn
               </a>
             </div>
 
-            <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6 md:flex-1 text-center">
-              <a
-                href="#"
-                className="hover:text-accent transition-colors whitespace-nowrap"
-              >
-                Privacy Policy
-              </a>
-              <a
-                href="#"
-                className="hover:text-accent transition-colors whitespace-nowrap"
-              >
-                Terms of Services
-              </a>
-              <a
-                href="#"
-                className="hover:text-accent transition-colors whitespace-nowrap hidden sm:inline-block"
-              >
-                Site by Stökt
-              </a>
-            </div>
+            {/* Right Column (1/3 width) - Empty counterweight to keep middle column centered */}
+            <div className="md:flex-1"></div>
           </div>
         </footer>
       </div>
