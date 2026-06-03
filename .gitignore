@@ -9,4 +9,4 @@ coverage/
 .env.example
 
 lib/firebase-config.ts
-firebase-config.js
+firebase-config.ts
