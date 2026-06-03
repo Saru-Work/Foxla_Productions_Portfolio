@@ -15,7 +15,7 @@ import {
 
 // Make sure you place your 'firebase-config.js' (or .ts) in the same folder as this file,
 // or update the path below to wherever it lives!
-import { firebaseConfig } from "@/lib/.firebase-config";
+import { firebaseConfig } from "@/lib/firebase-config";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
