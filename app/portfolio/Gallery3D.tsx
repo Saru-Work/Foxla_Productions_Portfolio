@@ -14,6 +14,7 @@ import {
   useMotionValue,
   useSpring,
 } from "motion/react";
+import { VerticalImageStack } from "../../components/ui/vertical-image-stack";
 
 /* ─── Google Fonts ───────────────────────────────────────────────────────── */
 const FONT_HREF =
@@ -39,6 +40,8 @@ interface Project {
   image: string;
   video?: string;
   tags: string[];
+  type?: string;
+  carouselImages?: { id: number; src: string; alt: string }[];
 }
 
 /* ─── Custom cursor ──────────────────────────────────────────────────────── */
@@ -188,46 +191,43 @@ function VideoCard({
           flex: "0 0 auto",
         }}
       >
-        {/* Static image */}
-        <img
-          src={project.image}
-          alt={project.title}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src =
-              "https://placehold.co/600x400/1a1a1a/ededed?text=Image+Unavailable";
-          }}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-            transition:
-              "transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.4s",
-            transform: hovered ? "scale(1.06)" : "scale(1)",
-            opacity: hovered && project.video ? 0 : 1,
-            position: "absolute",
-            inset: 0,
-          }}
-        />
-
-        {/* Video overlay */}
-        {project.video && (
+        {project.video ? (
           <video
             ref={videoRef}
-            src={project.video}
+            src={`${project.video}#t=0.001`}
             muted
             loop
             playsInline
             preload="metadata"
             style={{
-              position: "absolute",
-              inset: 0,
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              opacity: hovered ? 1 : 0,
-              transition: "opacity 0.45s ease",
+              display: "block",
+              transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)",
+              transform: hovered ? "scale(1.06)" : "scale(1)",
+              position: "absolute",
+              inset: 0,
+            }}
+          />
+        ) : (
+          <img
+            src={project.image}
+            alt={project.title}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src =
+                "https://placehold.co/600x400/1a1a1a/ededed?text=Image+Unavailable";
+            }}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+              transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)",
+              transform: hovered ? "scale(1.06)" : "scale(1)",
+              position: "absolute",
+              inset: 0,
             }}
           />
         )}
@@ -470,12 +470,16 @@ function ProjectModal({
         <div
           style={{
             position: "relative",
-            aspectRatio: "16/9",
+            aspectRatio: project.type === "carousel" ? "auto" : "16/9",
+            height: project.type === "carousel" ? "60vh" : "auto",
             background: "#000",
             flexShrink: 0,
+            overflow: "hidden",
           }}
         >
-          {project.video ? (
+          {project.type === "carousel" && project.carouselImages ? (
+            <VerticalImageStack images={project.carouselImages} />
+          ) : project.video ? (
             <video
               src={project.video}
               autoPlay

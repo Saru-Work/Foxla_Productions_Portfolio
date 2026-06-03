@@ -3,6 +3,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import dynamic from "next/dynamic";
+import portraitImage from "../../public/assets/images/potrait.png";
 
 const Gallery3D = dynamic(() => import("./Gallery3D"), { ssr: false });
 
@@ -12,9 +13,17 @@ const PROJECTS = [
     title: "Photography",
     subtitle: "Fashion & Lifestyle",
     year: "2025",
-    image: "https://picsum.photos/seed/photography/1200/800",
-    video:
-      "https://videos.pexels.com/video-files/3129595/3129595-hd_1280_720_30fps.mp4",
+    image: "/assets/images/photography/2.jpeg",
+    video: undefined,
+    type: "carousel",
+    carouselImages: [
+      { id: 1, src: "/assets/images/photography/1.jpeg", alt: "Photography 1" },
+      { id: 2, src: "/assets/images/photography/2.jpeg", alt: "Photography 2" },
+      { id: 3, src: "/assets/images/photography/3.jpeg", alt: "Photography 3" },
+      { id: 4, src: "/assets/images/photography/4.jpeg", alt: "Photography 4" },
+      { id: 5, src: "/assets/images/photography/5.jpeg", alt: "Photography 5" },
+      { id: 6, src: "/assets/images/photography/6.jpeg", alt: "Photography 6" },
+    ],
     tags: ["Portrait", "Editorial"],
   },
   {
@@ -23,8 +32,7 @@ const PROJECTS = [
     subtitle: "Racing Documentary",
     year: "2024",
     image: "https://picsum.photos/seed/video/1200/800",
-    video:
-      "https://videos.pexels.com/video-files/5961661/5961661-hd_1280_720_30fps.mp4",
+    video: "/assets/videos/3.mp4",
     tags: ["Directing", "Cinematography"],
   },
   {
@@ -33,8 +41,7 @@ const PROJECTS = [
     subtitle: "Automotive Campaign",
     year: "2024",
     image: "https://picsum.photos/seed/promo/1200/800",
-    video:
-      "https://videos.pexels.com/video-files/5961655/5961655-hd_1280_720_30fps.mp4",
+    video: "/assets/videos/2.mp4",
     tags: ["Commercial", "VFX"],
   },
   {
@@ -43,8 +50,7 @@ const PROJECTS = [
     subtitle: "Brand Identity",
     year: "2023",
     image: "https://picsum.photos/seed/creative/1200/800",
-    video:
-      "https://videos.pexels.com/video-files/6981412/6981412-hd_1280_720_25fps.mp4",
+    video: "/assets/videos/1.mp4",
     tags: ["Creative", "Design"],
   },
   {
@@ -182,7 +188,7 @@ export default function Portfolio() {
           >
             {/* Placeholder for a portrait - replace with your own */}
             <img
-              src="https://picsum.photos/seed/portrait/800/1000"
+              src={portraitImage.src}
               alt="Portrait"
               className="w-full h-full object-cover"
             />

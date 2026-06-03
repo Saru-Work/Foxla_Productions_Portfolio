@@ -157,16 +157,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <div className="relative z-10 flex flex-col justify-between h-full w-full max-w-[1920px] mx-auto p-6 md:p-12 pointer-events-none">
         {/* Header */}
         <header className="flex justify-between items-center text-[10px] sm:text-xs md:text-sm tracking-wide pointer-events-auto">
+          {/* Moved Portfolio link here and removed Case Studies */}
           <div className="flex gap-4 md:gap-8 items-center flex-1">
             <Link
               href="/portfolio"
-              className="text-text/70 hover:text-accent transition-colors cursor-pointer hidden sm:flex items-center gap-1"
-            >
-              Case Studies <span className="text-[10px] text-text/50">[6]</span>
-            </Link>
-            <Link
-              href="/portfolio"
-              className="text-text/50 hover:text-accent transition-colors cursor-pointer flex items-center gap-1"
+              className="text-text/70 hover:text-accent transition-colors cursor-pointer flex items-center gap-1"
             >
               Portfolio{" "}
               <span className="text-[10px] text-text/40 hidden sm:inline-block">
