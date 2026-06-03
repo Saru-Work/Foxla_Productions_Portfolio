@@ -11,7 +11,7 @@ const PROJECTS = [
   {
     id: "1",
     title: "Photography",
-    subtitle: "Fashion & Lifestyle",
+    subtitle: "VISUAL STORYTELLING",
     year: "2025",
     image: "/assets/images/photography/2.jpeg",
     video: undefined,
@@ -29,7 +29,7 @@ const PROJECTS = [
   {
     id: "2",
     title: "End to end video production",
-    subtitle: "Racing Documentary",
+    subtitle: "SCRIPT TO FINAL CUT",
     year: "2024",
     image: "https://picsum.photos/seed/video/1200/800",
     video: "/assets/videos/3.mp4",
@@ -38,7 +38,7 @@ const PROJECTS = [
   {
     id: "3",
     title: "Commercial ads",
-    subtitle: "Automotive Campaign",
+    subtitle: "BRAND MOMENTS THAT MATTER",
     year: "2024",
     image: "https://picsum.photos/seed/promo/1200/800",
     video: "/assets/videos/2.mp4",
@@ -47,8 +47,8 @@ const PROJECTS = [
   {
     id: "4",
     title: "Creative Direction and Design",
-    subtitle: "Brand Identity",
-    year: "2023",
+    subtitle: "CRAFTING BRAND EXPERIENCES",
+    year: "2025",
     image: "https://picsum.photos/seed/creative/1200/800",
     video: "/assets/videos/1.mp4",
     tags: ["Creative", "Design"],
@@ -67,16 +67,24 @@ const PROJECTS = [
 
 const SERVICES = [
   {
-    title: "Art Direction",
-    desc: "Crafting unique visual identities and brand narratives.",
+    title: "End to End Video Production",
+    desc: "From concept to color grade full pipeline. Scripting, direction, shoot, post-production, and delivery at the highest standard.",
   },
   {
-    title: "Cinematography",
-    desc: "High-end video production and lighting design.",
+    title: "Commercial Ads",
+    desc: "productions for TV, digital, and social. Ads that don't interrupt they engage, captivate, and convert with purpose.",
   },
   {
-    title: "Digital Design",
-    desc: "Immersive UI/UX and interactive web experiences.",
+    title: "Creative Direction and Design",
+    desc: "Strategic creative vision for campaigns, brand identities, and visual systems. We define the aesthetic DNA of your brand at every level.",
+  },
+  {
+    title: "Website Design and Development",
+    desc: "Premium digital experiences built for performance and beauty. From UX strategy to pixel-perfect code web presences that convert.",
+  },
+  {
+    title: "Photography",
+    desc: "Editorial, commercial, and lifestyle photography that captures the soul of your brand. Every frame tells a story worth stopping for.",
   },
 ];
 
@@ -139,7 +147,7 @@ export default function Portfolio() {
                 },
               }}
             >
-              Creative Director & Developer
+              Our Handpicked Featured Portfolio
             </motion.p>
           </motion.div>
         </AnimatePresence>
@@ -203,9 +211,9 @@ export default function Portfolio() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
               }}
             >
-              CRAFTING <br />
+              Not Content. Culture. <br />
               <span className="text-white/50 italic font-serif">
-                visual stories.
+                Anything but Cinematic.
               </span>
             </motion.h2>
             <motion.p
@@ -215,10 +223,8 @@ export default function Portfolio() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
               }}
             >
-              I am a multidisciplinary creator bridging the gap between high-end
-              cinematography, creative direction, and immersive digital
-              experiences. Every frame, every pixel, and every line of code is
-              designed to leave a lasting impact.
+              Photography | End to End Video Production | Commercial Ads |
+              Creative Direction & Design | Website Design & Development
             </motion.p>
           </motion.div>
         </motion.div>
@@ -243,11 +249,11 @@ export default function Portfolio() {
             Areas of Expertise
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {SERVICES.map((service, idx) => (
               <motion.div
                 key={idx}
-                className="group p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors cursor-pointer"
+                className="w-full md:w-[calc(33.333%-1rem)] group p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors cursor-pointer"
                 variants={{
                   hidden: { opacity: 0, y: 30 },
                   visible: {
@@ -315,15 +321,21 @@ export default function Portfolio() {
             Ready to bring your next big idea to life? Drop me a message and
             let's create something extraordinary.
           </motion.p>
-          <motion.button
-            className="mt-4 px-8 py-4 bg-white text-black rounded-full font-bold tracking-widest uppercase text-sm hover:scale-105 transition-transform"
+          <motion.div
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 },
             }}
           >
-            Get in touch
-          </motion.button>
+            <a
+              href="https://wa.me/+94703310725"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 px-8 py-4 bg-white text-black rounded-full font-bold tracking-widest uppercase text-sm hover:scale-105 transition-transform inline-block"
+            >
+              Get in touch
+            </a>
+          </motion.div>
 
           <motion.div
             className="flex gap-6 mt-12 text-sm tracking-widest uppercase text-white/40"
@@ -332,14 +344,21 @@ export default function Portfolio() {
               visible: { opacity: 1, transition: { delay: 0.4 } },
             }}
           >
-            <a href="#" className="hover:text-white transition-colors">
+            <a
+              href="https://www.instagram.com/foxlaproductions/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
               Instagram
             </a>
-            <a href="#" className="hover:text-white transition-colors">
+            <a
+              href="https://www.linkedin.com/company/foxlaproductions/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
               LinkedIn
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              Twitter
             </a>
           </motion.div>
         </motion.div>

@@ -164,9 +164,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
               className="text-text/70 hover:text-accent transition-colors cursor-pointer flex items-center gap-1"
             >
               Portfolio{" "}
-              <span className="text-[10px] text-text/40 hidden sm:inline-block">
-                [25]
-              </span>
+              <span className="text-[10px] text-text/40 hidden sm:inline-block"></span>
             </Link>
           </div>
 
