@@ -4,7 +4,7 @@ import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import dynamic from "next/dynamic";
 import portraitImage from "../../public/assets/images/potrait.png";
-
+import Image from "next/image";
 const Gallery3D = dynamic(() => import("./Gallery3D"), { ssr: false });
 
 const PROJECTS = [
@@ -59,9 +59,9 @@ const PROJECTS = [
     subtitle: "Interactive Experiences",
     year: "2023",
     image: "https://picsum.photos/seed/web/1200/800",
-    video:
-      "https://videos.pexels.com/video-files/6981410/6981410-hd_1280_720_25fps.mp4",
+    video: "/assets/videos/web.mp4",
     tags: ["UX/UI", "Development"],
+    layout: "landscape" as const,
   },
 ];
 
@@ -194,18 +194,14 @@ export default function Portfolio() {
               },
             }}
           >
-            {/* Placeholder for a portrait - replace with your own */}
-            <img
-              src={portraitImage.src}
-              alt="Portrait"
-              className="w-full h-full object-cover"
-            />
+            <Image src={portraitImage} alt="" fill className="object-contain" priority />
+            <div className="w-full h-full bg-black/50" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           </motion.div>
 
           <motion.div className="flex flex-col gap-6 p-6 rounded-2xl bg-black/20 backdrop-blur-md border border-white/5">
             <motion.h2
-              className="text-4xl md:text-6xl font-bold tracking-tighter"
+              className="text-4xl md:text-6xl font-bold"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -266,7 +262,7 @@ export default function Portfolio() {
                 <div className="text-3xl font-light text-white/30 group-hover:text-white/80 transition-colors mb-4">
                   0{idx + 1}
                 </div>
-                <h3 className="text-2xl font-bold mb-3 tracking-tight">
+                <h3 className="text-2xl font-bold mb-3">
                   {service.title}
                 </h3>
                 <p className="text-white/60 font-light leading-relaxed">

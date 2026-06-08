@@ -38,7 +38,7 @@ export default function HomeBackground() {
 
   return (
     <div className="fixed inset-0 w-[100vw] h-[100vh] z-0 bg-black pointer-events-none overflow-hidden">
-      <AnimatePresence>
+      {/* <AnimatePresence>
         <motion.video
           key={currentVideo}
           src={currentVideo}
@@ -52,7 +52,7 @@ export default function HomeBackground() {
           transition={{ duration: 1 }}
           className="absolute inset-0 w-[100vw] h-[100vh] object-cover"
         />
-      </AnimatePresence>
+      </AnimatePresence> */}
       <div className="absolute inset-0 w-[100vw] h-[100vh] bg-gradient-to-t from-background/80 via-transparent to-background/80" />
     </div>
   );

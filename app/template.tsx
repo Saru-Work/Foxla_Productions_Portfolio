@@ -156,7 +156,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       {/* Foreground Container */}
       <div className="relative z-10 flex flex-col justify-between h-full w-full max-w-[1920px] mx-auto p-6 md:p-12 pointer-events-none">
         {/* Header */}
-        <header className="flex justify-between items-center text-[10px] sm:text-xs md:text-sm tracking-wide pointer-events-auto">
+        <header className="relative z-50 shrink-0 h-12 sm:h-16 flex justify-between items-center text-[10px] sm:text-xs md:text-sm tracking-wide pointer-events-auto">
           {/* Moved Portfolio link here and removed Case Studies */}
           <div className="flex gap-4 md:gap-8 items-center flex-1">
             <Link
@@ -175,7 +175,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           >
             <Link href="/">
               <div className="relative h-12 sm:h-16 flex items-center justify-center min-w-[120px]">
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="wait" initial={false}>
                   {!isLogoHovered ? (
                     <motion.div
                       key="logo"
@@ -257,15 +257,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
         </motion.div>
 
         {/* Footer - Glassmorphism surface */}
-        <footer className="flex flex-col gap-6 pointer-events-auto">
+        <footer className="shrink-0 flex flex-col gap-6 pointer-events-auto">
           {/* Progress Bar Component */}
           {pathname !== "/portfolio" && (
             <div className="w-full flex gap-2">
               {[0, 1, 2, 3, 4].map((item, index) => {
                 const activeIndex =
                   pathname === "/" ||
-                  pathname === "/about" ||
-                  pathname === "/contact"
+                    pathname === "/about" ||
+                    pathname === "/contact"
                     ? homeIndex
                     : currentIndex;
                 const isActive = index <= activeIndex;

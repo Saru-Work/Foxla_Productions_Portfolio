@@ -42,6 +42,7 @@ interface Project {
   tags: string[];
   type?: string;
   carouselImages?: { id: number; src: string; alt: string }[];
+  layout?: "portrait" | "landscape";
 }
 
 /* ─── Custom cursor ──────────────────────────────────────────────────────── */
@@ -140,8 +141,8 @@ function VideoCard({
   const [hovered, setHovered] = useState(false);
   const [cursorLabel, setCursorLabel] = useState("");
 
-  /* Alternating tall/wide layout */
-  const isTall = index % 3 === 1;
+  /* Alternating tall/wide layout, but allow project to override */
+  const isTall = project.layout ? project.layout === "portrait" : index % 3 === 1;
 
   useEffect(() => {
     if (!videoRef.current) return;
