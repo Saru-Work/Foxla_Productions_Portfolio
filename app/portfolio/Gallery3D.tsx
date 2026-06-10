@@ -56,10 +56,16 @@ function MagneticCursor({ label }: { label: string }) {
 
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-    // 2. Mark as mounted to safely use createPortal in Next.js
     setMounted(true);
+
+    // 2. Detect if the user is on a mobile/touch device
+    if (window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768) {
+      setIsTouchDevice(true);
+      return; // Stop running the mouse tracking logic on mobile
+    }
 
     const move = (e: MouseEvent) => {
       // Offset by half the width/height (36px of 72px) to center it
@@ -79,8 +85,8 @@ function MagneticCursor({ label }: { label: string }) {
     };
   }, [x, y]);
 
-  // 3. Do not render anything on the server
-  if (!mounted) return null;
+  // 3. Do not render anything on the server OR on touch devices
+  if (!mounted || isTouchDevice) return null;
 
   // 4. Portal the cursor directly to the <body> so it ignores parent transforms
   return createPortal(
@@ -147,7 +153,7 @@ function VideoCard({
   useEffect(() => {
     if (!videoRef.current) return;
     if (hovered) {
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
     } else {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;

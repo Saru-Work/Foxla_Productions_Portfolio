@@ -227,16 +227,17 @@ export default function Portfolio() {
       </section>
 
       {/* 3. SERVICES SECTION */}
-      <section className="relative w-full h-[100dvh] shrink-0 snap-always snap-center flex flex-col items-center justify-center px-6 md:px-20 pointer-events-auto">
+      {/* Changed to min-h-[100dvh], added padding, and changed to snap-start */}
+      <section className="relative w-full min-h-[100dvh] py-24 md:py-32 shrink-0 snap-always snap-start flex flex-col items-center justify-center px-6 md:px-20 pointer-events-auto">
         <motion.div
           className="w-full max-w-6xl"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: false, amount: 0.15 }}
           variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
         >
           <motion.h2
-            className="text-xs tracking-[0.3em] uppercase text-white/50 mb-12 text-center"
+            className="text-xs tracking-[0.3em] uppercase text-white/50 mb-16 text-center"
             variants={{
               hidden: { opacity: 0, y: 10 },
               visible: { opacity: 1, y: 0 },

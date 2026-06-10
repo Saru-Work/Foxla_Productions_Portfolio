@@ -235,7 +235,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           <div className="flex gap-4 md:gap-8 items-center text-text/70 flex-1 justify-end">
             <Link
               href="/about"
-              className="hover:text-accent transition-colors cursor-pointer hidden sm:block"
+              className="hover:text-accent transition-colors cursor-pointer"
             >
               About
             </Link>
