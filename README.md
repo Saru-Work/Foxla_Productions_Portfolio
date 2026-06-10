@@ -1,20 +1,20 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🦊 Foxla Productions - Cinematic Portfolio
 
-# Run and deploy your AI Studio app
+A high-end, immersive portfolio web application built for Foxla Productions. This project features a moody, cinematic aesthetic with global video backgrounds, complex scroll-snapping, interactive 3D elements, and buttery-smooth page transitions.
 
-This contains everything you need to run your app locally.
+## ✨ Key Features
 
-View your app in AI Studio: https://ai.studio/apps/a0664618-d6ef-4bfe-a27c-cf9b859d3218
+* **Cinematic Video Background:** A persistent, high-quality video background with subtle mouse-parallax tracking.
+* **Fluid Animations:** Custom page transitions, staggering text reveals, and pop-layout grids powered by Framer Motion.
+* **Smart Magnetic Cursor:** A custom trailing cursor on desktop that automatically disables itself on touch/mobile devices for optimal UX.
+* **Interactive 3D Gallery:** A dynamic, filterable masonry-style project gallery with hovering video previews and a modal detailed view.
+* **Responsive Scroll Snapping:** Carefully tuned CSS scroll-snapping (`snap-y snap-mandatory`) that seamlessly adapts from desktop side-by-side layouts to mobile stacked views.
+* **Serverless Contact Form:** Fully integrated with Firebase for real-time message handling.
 
-## Run Locally
+## 🛠️ Tech Stack
 
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+* **Framework:** [Next.js](https://nextjs.org/) (App Router)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Animations:** [Motion](https://motion.dev/) (Framer Motion)
+* **Backend/Database:** [Firebase](https://firebase.google.com/) (Firestore)
+* **Deployment:** Vercel
