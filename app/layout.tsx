@@ -38,8 +38,11 @@ const archivoBlack = Archivo_Black({
 });
 
 export const metadata: Metadata = {
-  title: "MAJOR Portfolio Clone",
-  description: "Cinematic sports portfolio clone",
+  title: "Foxla Productions",
+  description: "Creative Agency",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({
