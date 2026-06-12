@@ -23,32 +23,61 @@ export default function About() {
   const isScrolling = useRef(false);
 
   useEffect(() => {
-    // Reset index to 0 when entering the page
-    setHomeIndex(0);
+    // 1. Keep track of touch coordinates
+    let touchStartY = 0;
+    let touchEndY = 0;
 
-    const handleWheel = (e: WheelEvent) => {
+    const handleScroll = (direction: number) => {
       if (isScrolling.current) return;
 
-      const direction = e.deltaY > 0 ? 1 : -1;
+      setHomeIndex((prev: number) => {
+        let newIndex = prev + direction;
+        if (newIndex < 0) newIndex = 0;
+        if (newIndex >= ABOUT_SLIDES.length) newIndex = ABOUT_SLIDES.length - 1; // CHANGE THIS ARRAY NAME FOR ABOUT/CONTACT PAGES
+        return newIndex;
+      });
 
-      if (e.deltaY > 20 || e.deltaY < -20) {
-        setHomeIndex((prev: number) => {
-          let newIndex = prev + direction;
-          if (newIndex < 0) newIndex = 0;
-          if (newIndex >= ABOUT_SLIDES.length)
-            newIndex = ABOUT_SLIDES.length - 1;
-          return newIndex;
-        });
+      isScrolling.current = true;
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, 1000); // 1s cool-down between scrolls
+    };
 
-        isScrolling.current = true;
-        setTimeout(() => {
-          isScrolling.current = false;
-        }, 1000);
+    // 2. Mouse Wheel Logic
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > 20) {
+        const direction = e.deltaY > 0 ? 1 : -1;
+        handleScroll(direction);
       }
     };
 
+    // 3. Mobile Touch Logic
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.changedTouches[0].screenY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      touchEndY = e.changedTouches[0].screenY;
+      const deltaY = touchStartY - touchEndY;
+
+      // Require a minimum swipe distance of 50px to prevent accidental micro-swipes
+      if (Math.abs(deltaY) > 50) {
+        const direction = deltaY > 0 ? 1 : -1;
+        handleScroll(direction);
+      }
+    };
+
+    // 4. Attach all listeners
     window.addEventListener("wheel", handleWheel);
-    return () => window.removeEventListener("wheel", handleWheel);
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchend", handleTouchEnd);
+
+    // 5. Cleanup
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
   }, [setHomeIndex]);
 
   const safeIndex = Math.min(homeIndex, ABOUT_SLIDES.length - 1);
