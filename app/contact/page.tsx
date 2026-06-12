@@ -80,6 +80,7 @@ export default function Contact() {
   });
 
   useEffect(() => {
+    setHomeIndex(0);
     // 1. Keep track of touch coordinates
     let touchStartY = 0;
     let touchEndY = 0;

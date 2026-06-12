@@ -23,6 +23,7 @@ export default function About() {
   const isScrolling = useRef(false);
 
   useEffect(() => {
+    setHomeIndex(0);
     // 1. Keep track of touch coordinates
     let touchStartY = 0;
     let touchEndY = 0;
