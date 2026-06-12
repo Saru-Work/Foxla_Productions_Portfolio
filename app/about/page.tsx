@@ -33,14 +33,17 @@ export default function About() {
       setHomeIndex((prev: number) => {
         let newIndex = prev + direction;
         if (newIndex < 0) newIndex = 0;
-        if (newIndex >= ABOUT_SLIDES.length) newIndex = ABOUT_SLIDES.length - 1; // CHANGE THIS ARRAY NAME FOR ABOUT/CONTACT PAGES
+
+        // ⚠️ CHANGE THIS FOR ABOUT/CONTACT PAGES
+        if (newIndex >= ABOUT_SLIDES.length) newIndex = ABOUT_SLIDES.length - 1;
+
         return newIndex;
       });
 
       isScrolling.current = true;
       setTimeout(() => {
         isScrolling.current = false;
-      }, 1000); // 1s cool-down between scrolls
+      }, 1000);
     };
 
     // 2. Mouse Wheel Logic
@@ -60,22 +63,29 @@ export default function About() {
       touchEndY = e.changedTouches[0].screenY;
       const deltaY = touchStartY - touchEndY;
 
-      // Require a minimum swipe distance of 50px to prevent accidental micro-swipes
       if (Math.abs(deltaY) > 50) {
         const direction = deltaY > 0 ? 1 : -1;
         handleScroll(direction);
       }
     };
 
-    // 4. Attach all listeners
+    // 3.5 Prevent Pull-to-Refresh
+    const handleTouchMove = (e: TouchEvent) => {
+      // This stops the browser from refreshing when you swipe down!
+      e.preventDefault();
+    };
+
+    // 4. Attach all listeners (Notice the passive: false flag!)
     window.addEventListener("wheel", handleWheel);
     window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleTouchEnd);
 
     // 5. Cleanup
     return () => {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
     };
   }, [setHomeIndex]);
