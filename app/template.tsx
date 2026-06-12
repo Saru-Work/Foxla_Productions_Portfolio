@@ -97,7 +97,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
       initial={currentTransition.initial}
       animate={currentTransition.animate}
       transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-      className="fixed inset-0 w-full h-[100dvh] bg-background flex flex-col justify-between overflow-hidden shadow-2xl shadow-background z-20 origin-center"
+      // FIX 1: Removed redundant `h-[100dvh]` because `inset-0` already perfectly constraints the height.
+      className="fixed inset-0 w-full bg-background flex flex-col justify-between overflow-hidden shadow-2xl shadow-background z-20 origin-center"
       style={{ willChange: "transform, filter" }}
     >
       {/* Background Container */}
@@ -157,10 +158,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <div className="relative z-10 flex flex-col justify-between h-full w-full max-w-[1920px] mx-auto p-6 md:p-12 pointer-events-none">
         {/* Header */}
         <header className="relative z-50 shrink-0 h-12 sm:h-16 flex justify-between items-center text-[10px] sm:text-xs md:text-sm tracking-wide pointer-events-auto">
-          {/* Moved Portfolio link here and removed Case Studies */}
           <div className="flex gap-4 md:gap-8 items-center flex-1">
+            {/* FIX 2: Added scroll={false} */}
             <Link
               href="/portfolio"
+              scroll={false}
               className="text-text/70 hover:text-accent transition-colors cursor-pointer flex items-center gap-1"
             >
               Portfolio{" "}
@@ -173,7 +175,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
             onMouseEnter={() => setIsLogoHovered(true)}
             onMouseLeave={() => setIsLogoHovered(false)}
           >
-            <Link href="/">
+            {/* FIX 2: Added scroll={false} */}
+            <Link href="/" scroll={false}>
               <div className="relative h-12 sm:h-16 flex items-center justify-center min-w-[120px]">
                 <AnimatePresence mode="wait" initial={false}>
                   {!isLogoHovered ? (
@@ -233,14 +236,18 @@ export default function Template({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex gap-4 md:gap-8 items-center text-text/70 flex-1 justify-end">
+            {/* FIX 2: Added scroll={false} */}
             <Link
               href="/about"
+              scroll={false}
               className="hover:text-accent transition-colors cursor-pointer"
             >
               About
             </Link>
+            {/* FIX 2: Added scroll={false} */}
             <Link
               href="/contact"
+              scroll={false}
               className="hover:text-accent transition-colors cursor-pointer"
             >
               Contact
@@ -249,8 +256,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Dynamic Page Content */}
+        {/* FIX 3: Added min-h-0 so the children can NEVER stretch this container and push the header off-screen */}
         <motion.div
-          className="relative flex-1 w-full flex items-center my-12 pointer-events-none"
+          className="relative flex-1 min-h-0 w-full flex items-center my-12 pointer-events-none"
           style={{ x: contentTranslateX, y: contentTranslateY }}
         >
           {children}
@@ -264,8 +272,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
               {[0, 1, 2, 3, 4].map((item, index) => {
                 const activeIndex =
                   pathname === "/" ||
-                    pathname === "/about" ||
-                    pathname === "/contact"
+                  pathname === "/about" ||
+                  pathname === "/contact"
                     ? homeIndex
                     : currentIndex;
                 const isActive = index <= activeIndex;
@@ -296,12 +304,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
           {/* Bottom Footer Links */}
           <div className="flex flex-col md:flex-row justify-between items-center text-[8px] md:text-[10px] text-text/50 tracking-wider gap-4 md:gap-0 mt-4">
-            {/* Left Column (1/3 width) */}
             <div className="md:flex-1 text-center md:text-left">
               © 2026 Foxla All rights reserved.
             </div>
-
-            {/* Middle Column (1/3 width) */}
             <div className="flex gap-4 md:gap-6 md:flex-1 justify-center">
               <a
                 href="https://www.instagram.com/foxlaproductions/"
@@ -316,8 +321,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
                 LinkedIn
               </a>
             </div>
-
-            {/* Right Column (1/3 width) - Empty counterweight to keep middle column centered */}
             <div className="md:flex-1"></div>
           </div>
         </footer>
